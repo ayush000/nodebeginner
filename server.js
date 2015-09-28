@@ -1,13 +1,22 @@
 /**
  * Created by socomo14 on 9/28/15.
  */
+var http=require('http');
+var url=require('url');
 
-var start=function() {
-    var http = require("http");
-    http.createServer(function (request, response) {
+function start(route) {
+    var onRequest=function (request, response) {
+        var pathname=url.parse(request.url).pathname;
+        console.log("Request for "+pathname+" received.");
+
+        //route(pathname);
+        route(pathname);
+
         response.writeHead(200, {"Content-type": "text/plan"});
         response.write("Hello World");
         response.end();
-    }).listen(8888);
-};
+    };
+    http.createServer(onRequest).listen(8889);
+    console.log("Server has started");
+}
 exports.start=start;
