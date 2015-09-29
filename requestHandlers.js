@@ -2,8 +2,9 @@
  * Created by swarn on 28/09/15.
  */
 
-    var exec=require("child_process").exec;
+    //var exec=require("child_process").exec;
 var querystring =require('querystring');
+var fs=require('fs');
 var start = function (response,postData) {
     var body = '<html>'+
         '<head>'+
@@ -34,6 +35,26 @@ var upload = function (response,postData) {
     response.write("You've sent "+querystring.parse(postData).text);
     response.end();
 };
+var show = function(response,postData)
+{
+    console.log("Request handler for show was called");
+    fs.readFile("tmp/random_detail.jpg","binary",function(error,file)
+    {
+        if(error)
+        {
+            response.writeHead(500,{"Content-Type":"text/plain"});
+            response.write(error+"\n");
+            response.end();
+        }
+        else
+        {
+            response.writeHead(200,{"Content-Type":"image/jpg"});
+            response.write(file,"binary");
+            response.end();
+        }
+    })
+};
 
 exports.start = start;
 exports.upload = upload;
+exports.show=show;
